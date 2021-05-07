@@ -1,14 +1,17 @@
 const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args) => {
-
-    let motivo = args.slice(' ').join
+    message.delete().catch(O_o => {});
+    const messageArray = message.content.split(" ");
+  let motivo = args.slice(" ").join(" ")
     if(!motivo) motivo = "Motivo não informado"
     let avatar = message.author.avatarURL({ dynamic: true, format: "png", size: 1024});
        if(!message.member.hasPermission("MANAGE_MESSAGES")) {
-           const embed = new Discord.MessageEmbed()
-           .setDescription(`${message.author}, Você não tem permissão para execultar este comando.`)
-           return message.channel.send(embed)
+
+           const lock = new Discord.MessageEmbed()
+    .setTitle(`> **Ops,** ${message.author.tag} **acabei de reparar que você não tem permissão para dar lock.**`)
+    .setColor('#e999bf')
+    return message.channel.send(lock)
        } 
        message.delete();
        message.channel.createOverwrite(message.guild.id, {
@@ -17,7 +20,7 @@ module.exports.run = async (bot, message, args) => {
        })
        const embed = new Discord.MessageEmbed()
        .setTitle('Chat Trancado')
-       .setDescription(`<a:Si:821235764783611954>| Este chat foi Mutado.`)
+       .setDescription(`Este chat foi trancado.`)
        .addField('Destrancar:', 'b!unlock', true)
        .addField('Trancado por:', `${message.author}`, true)
        .addField('Motivo:', motivo)

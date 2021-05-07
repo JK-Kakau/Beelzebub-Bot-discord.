@@ -1,21 +1,35 @@
+const Discord = require('discord.js')
+
 module.exports.run = async (bot, message) => {
     const messageArray = message.content.split(' ');
     const args = messageArray.slice(1);
     
-    if(!message.member.permissions.has("MANAGE_MESSAGE")) return message.channel.send('Você precisa de mais permissões para execultar este comando.');
+    const perm = new Discord.MessageEmbed()
+    .setTitle("> **Ops, acabei de reparar que você não tem permissão para dar clear.**")
+    .setColor('#e999bf')
+    if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send(perm);
 
     let deleteAmount;
 
-    if (isNaN(args[0]) || parseInt(args[0]) <= 0) { return message.reply('Insira um número válido') }
+    const número = new Discord.MessageEmbed()
+    .setTitle("> **Ops, insira um número válido.**")
+    .setColor('#e999bf')
+    if (isNaN(args[0]) || parseInt(args[0]) <= 0) { return message.channel.send(número)}
 
+    const limite = new Discord.MessageEmbed()
+    .setTitle("> **Ops, você só pode excluir 99 mensagens por vez.**")
+    .setColor('#e999bf')
     if (parseInt(args[0]) > 99) {
-       return message.reply('Você só pode excluir 99 mensagens por vez')
+       return message.channel.send(limite)
     } else {
         deleteAmount = parseInt(args[0]);
     }
 
-    message.channel.bulkDelete(deleteAmount +1, true);
-    message.reply(`**Foram deletadas** ${deleteAmount} **Mensagens deste canal.**<a:yes:818832899045982258> `)
+    const apagando = new Discord.MessageEmbed()
+    .setTitle(`> <a:Yes:838861082139426818>**Foram deletadas** ${deleteAmount} **Mensagens deste canal.**<a:Yes:838861082139426818>`)
+    .setColor('#e999bf')
+    await message.channel.bulkDelete(deleteAmount +1, true);
+    await message.channel.send(apagando)
 }
 
 module.exports.config = {
